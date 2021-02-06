@@ -117,4 +117,46 @@ The assignment deliverable consists of a Github repository containing:
 
 
 # Design
-[ Your work goes here ]
+
+#### Network requirements
+- 467 adresses for Host-A
+- 393 addresses for Host-B
+- 126 addresses for Host-C
+- Host-C running a docker image reachable by host-A and host-B
+- Using only static routes as generic as possible
+
+## Subnetting
+
+- For Host-A we need 467 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.0.0 /23.
+- For Host-B we need 393 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.2.0 /23.
+- For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this net the address 192.168.4.0 /25.
+
+## Network topology
+(image here)
+
+## IP configuration
+In this network we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
+
+#### Router 1
+```
+10.1.1.1/30 enp0s9        (Link between the two routers)
+192.168.0.1/23 enp0s8.2   (Gateway for VLAN 2 [Host-A])
+192.168.2.1/23 enp0s8.3   (Gateway for VLAN 3 [Host-B])
+```
+#### Router 2
+```
+10.1.1.2/30 enp0s9        (Link between the two routers)
+192.168.4.1/25 enp0s8.2   (Gateway for host-C)
+```
+#### Host-a
+```
+192.168.0.2/23 enp0s8     (Host-A IP address)
+```
+#### Host-b
+```
+192.168.2.2/23 enp0s8     (Host-B IP address)
+```
+#### Host-c
+```
+192.168.4.2/25 enp0s8     (Host-B IP address)
+```
