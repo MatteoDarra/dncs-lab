@@ -165,7 +165,7 @@ In this topology we have a switch directly connected to two networks. Because of
 First of all, we need to reconfigure the file ` Vagrantfile `. What we need to do is to change some lines of this file. In particular we need to change the path for every device from ` "common.sh" ` to ` "deviceName.sh" `.
 We need also to increase the memory of Host-C from 256 to 512 to run a Docker image.
 
-#### Router 1
+##### Router 1
 ```
 router1.vm.provision "shell", path: "common.sh" ---> router1.vm.provision "shell", path: "router-1.sh"
 ```
