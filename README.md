@@ -118,15 +118,14 @@ The assignment deliverable consists of a Github repository containing:
 
 # Design
 
-#### Network requirements
+## Network requirements
 - 467 adresses for Host-A
 - 393 addresses for Host-B
 - 126 addresses for Host-C
-- Host-C running a docker image reachable by host-A and host-B
+- Host-C running a Docker image reachable by host-A and host-B
 - Using only static routes as generic as possible
 
 ## Subnetting
-
 - For Host-A we need 467 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.0.0 /23.
 - For Host-B we need 393 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.2.0 /23.
 - For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this net the address 192.168.4.0 /25.
@@ -134,8 +133,8 @@ The assignment deliverable consists of a Github repository containing:
 ## Network topology
 (image here)
 
-## IP configuration
-In this network we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
+## IP and physical ports configuration
+In this topology we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
 
 #### Router 1
 ```
@@ -148,15 +147,53 @@ In this network we have a switch directly connected to two networks. Because of 
 10.1.1.2/30 enp0s9        (Link between the two routers)
 192.168.4.1/25 enp0s8.2   (Gateway for host-C)
 ```
-#### Host-a
+#### Host-A
 ```
 192.168.0.2/23 enp0s8     (Host-A IP address)
 ```
-#### Host-b
+#### Host-B
 ```
 192.168.2.2/23 enp0s8     (Host-B IP address)
 ```
-#### Host-c
+#### Host-C
 ```
-192.168.4.2/25 enp0s8     (Host-B IP address)
+192.168.4.2/25 enp0s8     (Host-C IP address)
 ```
+
+## File configuration
+### Vagrant file
+First of all, we need to reconfigure the file ` Vagrantfile `. What we need to do is to change some lines of this file. In particular we need to change the path for every device from ` "common.sh" ` to ` "deviceName.sh" `.
+We need also to increase the memory of Host-C from 256 to 512 to run a Docker image.
+
+#### Router 1
+```
+router1.vm.provision "shell", path: "common.sh" ---> router1.vm.provision "shell", path: "router-1.sh"
+```
+##### Router 2
+```
+router2.vm.provision "shell", path: "common.sh"  ---> router2.vm.provision "shell", path: "router-2.sh" 
+```
+##### Switch
+```
+switch.vm.provision "shell", path: "common.sh" ---> switch.vm.provision "shell", path: "switch.sh" 
+```
+##### Host-A
+```
+hosta.vm.provision "shell", path: "common.sh" ---> hosta.vm.provision "shell", path: "host-a.sh"
+```
+##### Host-B
+```
+hostb.vm.provision "shell", path: "common.sh" ---> hostb.vm.provision "shell", path: "host-b.sh"
+```
+##### Host-C
+```
+hostc.vm.provision "shell", path: "common.sh" ---> hostc.vm.provision "shell", path: "host-c.sh"
+vb.memory = 256 ---> vb.memory = 512
+```
+### Switch
+
+
+
+
+
+
