@@ -131,7 +131,7 @@ The assignment deliverable consists of a Github repository containing:
 - For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this net the address 192.168.4.0 /25 (in this case I decided to include the gateway as a host).
 
 ## Network topology
-![Image](rete.png)
+![Image](rete.PNG)
 
 ## IP and physical ports configuration
 In this topology we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
