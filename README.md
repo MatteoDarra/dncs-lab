@@ -134,7 +134,7 @@ The assignment deliverable consists of a Github repository containing:
 ![Image](rete.PNG)
 
 ## IP and physical ports configuration
-In this topology we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
+In this topology we have a switch directly connected to two networks. Because of that,  we need to create two VLANs in order to split the traffic to the right hosts. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
 
 #### Router 1
 ```
