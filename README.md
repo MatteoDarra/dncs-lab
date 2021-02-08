@@ -126,9 +126,9 @@ The assignment deliverable consists of a Github repository containing:
 - Using only static routes as generic as possible
 
 ## Subnetting
-- For Host-A we need 467 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.0.0 /23.
-- For Host-B we need 393 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this net the address 192.168.2.0 /23.
-- For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this net the address 192.168.4.0 /25 (in this case I decided to include the gateway as a host).
+- For Host-A we need 467 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this subnet the address 192.168.0.0 /23.
+- For Host-B we need 393 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this subnet the address 192.168.2.0 /23.
+- For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this subnet the address 192.168.4.0 /25 (in this case I decided to include the gateway as a host).
 
 ## Network topology
 ![Image](rete.PNG)
@@ -160,7 +160,7 @@ In this topology we have a switch directly connected to two networks. Because of
 192.168.4.2/25 enp0s8     (Host-C IP address)
 ```
 
-## File configuration
+## Files and devices configuration
 ### Vagrant file
 First of all, we need to reconfigure the ` Vagrantfile ` file. What we need to do is to change some lines of this file. In particular we need to change the path for every device from ` "common.sh" ` to ` "deviceName.sh" `.
 We need also to increase the memory of Host-C from 256 to 512 to run a Docker image.
@@ -192,7 +192,7 @@ vb.memory = 256 ---> vb.memory = 512
 ```
 ### Router-1
 Router-1 must be connected to the switch and router-2 to grant the connection between all the networks of our topology (host-A and host-B networks connected to host-C network) and also to grant the perfect behavior of VLAN-2 and VLAN-3, that use an encapsulated port of router-1 as gateway.
-Also we need to create a static route, in order to grant the connectivity between host-A and host-B networks and host-C network. In particular we need to specify that packets whose destination is the host-C network must be sent to the router-2.
+Also we need to create a static route, to grant the connectivity between host-A and host-B networks and host-C network. In particular we need to specify that packets whose destination is the host-C network must be sent to the router-2.
 To do this we open the ` router-1.sh ` file and type as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
@@ -240,7 +240,7 @@ sudo ip link set dev enp0s10 up                  (activating enp0s10 port)
 ```
 
 ### Host-A
-Host-A in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-C must know how to reach host-A and host-B networks).
+Host-A in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-C must know how to reach host-A and host-B networks). To do that we need to open the `file host-a.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo ip addr add 192.168.0.2/23 dev enp0s8          (set the IP of enp0s8 port [host-A])
@@ -250,7 +250,7 @@ sudo ip route add 192.168.2.0/23 via 192.168.0.1    (static route to host-B netw
 ```
 
 ### Host-B
-Host-B in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-B must know how to reach host-A and host-C networks).
+Host-B in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-B must know how to reach host-A and host-C networks). To do that we need to open the `file host-a.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo ip addr add 192.168.2.2/23 dev enp0s8         (set the IP of enp0s8 port [host-B])
@@ -262,6 +262,7 @@ sudo ip route add 192.168.4.0/25 via 192.168.2.1   (static route to host-C netwo
 ### Host-C
 Host-C in our topology is connected to router-2 and must contain static routes in order to send the packages to the correct IP (host-A must know how to reach host-B and host-C networks).
 Also host-C must run the ` dustnic82 / nginx-test ` docker image, so we need to install ` docker.io `  and run that docker image.
+To do that we need to open the `file host-a.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
