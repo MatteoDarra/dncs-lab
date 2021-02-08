@@ -131,7 +131,7 @@ The assignment deliverable consists of a Github repository containing:
 - For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this net the address 192.168.4.0 /25 (in this case I decided to include the gateway as a host).
 
 ## Network topology
-(image here)
+![Image](rete.png)
 
 ## IP and physical ports configuration
 In this topology we have a switch directly connected to two networks. Because of that, in order to split the traffic to the right hosts we need to create two vlans. Also we need to create an encapsulation of two ports on router-1, and these will be the VLANs gateways. (We're creating two ports over one physical port).
@@ -276,5 +276,112 @@ sudo ip route add 192.168.0.0/23 via 192.168.4.1                (static route to
 sudo ip route add 192.168.2.0/23 via 192.168.4.1                (static route to host-B network [192.168.2.0/23])
 ```
 
+# Test and conclusions
+To test the behavior of our network we need to run the ` vagrant up ` command into our ` dncs-lab ` directory, wait a little bit, and after the startup log into each host, with the command ` vagrant ssh [hostname] `, and try to ping the other ones, with the command ` ping [hostname] `.
+When we log into host-A and/or host-B we can test our docker image on the host-C with the ` curl 192.168.4.2 ` command.
+With this command the result should be as follow:
+```
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello World</title>
+<link href="data:image/png;base64,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" rel="icon" type="image/png" />
+<style>
+body {
+  margin: 0px;
+  font: 20px 'RobotoRegular', Arial, sans-serif;
+  font-weight: 100;
+  height: 100%;
+  color: #0f1419;
+}
+div.info {
+  display: table;
+  background: #e8eaec;
+  padding: 20px 20px 20px 20px;
+  border: 1px dashed black;
+  border-radius: 10px;
+  margin: 0px auto auto auto;
+}
+div.info p {
+    display: table-row;
+    margin: 5px auto auto auto;
+}
+div.info p span {
+    display: table-cell;
+    padding: 10px;
+}
+img {
+    width: 176px;
+    margin: 36px auto 36px auto;
+    display:block;
+}
+div.smaller p span {
+    color: #3D5266;
+}
+h1, h2 {
+  font-weight: 100;
+}
+div.check {
+    padding: 0px 0px 0px 0px;
+    display: table;
+    margin: 36px auto auto auto;
+    font: 12px 'RobotoRegular', Arial, sans-serif;
+}
+#footer {
+    position: fixed;
+    bottom: 36px;
+    width: 100%;
+}
+#center {
+    width: 400px;
+    margin: 0 auto;
+    font: 12px Courier;
+}
+
+</style>
+<script>
+var ref;
+function checkRefresh(){
+    if (document.cookie == "refresh=1") {
+        document.getElementById("check").checked = true;
+        ref = setTimeout(function(){location.reload();}, 1000);
+    } else {
+    }
+}
+function changeCookie() {
+    if (document.getElementById("check").checked) {
+        document.cookie = "refresh=1";
+        ref = setTimeout(function(){location.reload();}, 1000);
+    } else {
+        document.cookie = "refresh=0";
+        clearTimeout(ref);
+    }
+}
+</script>
+</head>
+<body onload="checkRefresh();">
+<img alt="NGINX Logo" src="http://d37h62yn5lrxxl.cloudfront.net/assets/nginx.png"/>
+<div class="info">
+<p><span>Server&nbsp;address:</span> <span>172.17.0.2:80</span></p>
+<p><span>Server&nbsp;name:</span> <span>31ac70a30914</span></p>
+<p class="smaller"><span>Date:</span> <span>16/Jan/2021:23:36:01 +0000</span></p>
+<p class="smaller"><span>URI:</span> <span>/</span></p>
+</div>
+<br>
+<div class="info">
+    <p class="smaller"><span>Host:</span> <span>192.168.0.2</span></p>
+    <p class="smaller"><span>X-Forwarded-For:</span> <span></span></p>
+</div>
+
+<div class="check"><input type="checkbox" id="check" onchange="changeCookie()"> Auto Refresh</div>
+    <div id="footer">
+        <div id="center" align="center">
+            Request ID: a2643e5f70e248c000aaa0492a61d9b4<br/>
+            &copy; NGINX, Inc. 2018
+        </div>
+    </div>
+</body>
+</html>
+```
 
 
