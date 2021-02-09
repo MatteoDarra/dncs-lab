@@ -209,7 +209,7 @@ sudo ip route add 192.168.4.0/25 via 10.1.1.2               (static route to hos
 
 ### Router-2
 Router-2 must be connected to host-C network and router-1 to grant the connection between all the networks of our topology (host-C network connected to host-A and host-B networks).
-Also we need to create a static routes, in order to grant the connectivity between host-C network connected to host-A and host-B networks. In particular we need to specify that packets whose destination is the host-A or host-B network must be sent to the router-2.
+Also we need to create a static routes, in order to grant the connectivity between host-C network to host-A and host-B networks. In particular we need to specify that packets whose destination is the host-A or host-B network must be sent to the router-2.
 To do this we open the ` router-2.sh ` file and type as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
