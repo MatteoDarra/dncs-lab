@@ -128,7 +128,7 @@ The assignment deliverable consists of a Github repository containing:
 ## Subnetting
 - For Host-A we need 467 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this subnet the address 192.168.0.0 /23.
 - For Host-B we need 393 hosts, so we use 9 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 512-2=510 possible host addresses. I've choosen for this subnet the address 192.168.2.0 /23.
-- For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this subnet the address 192.168.4.0 /25 (in this case I decided to include the gateway as a host).
+- For Host-C we need 126 hosts, so we use 7 bits out of 32 (IPv4 bits) for the hosts part. We obtain a total of 128-2=126 possible host addresses. I've choosen for this subnet the address 192.168.4.0 /25.
 
 ## Network topology
 ![Image](rete.PNG)
