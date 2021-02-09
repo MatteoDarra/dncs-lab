@@ -145,7 +145,7 @@ In this topology we have a switch directly connected to two networks. Because of
 #### Router 2
 ```
 10.1.1.2/30 enp0s9        (Link between the two routers)
-192.168.4.1/25 enp0s8.2   (Gateway for host-C)
+192.168.4.1/25 enp0s8     (Gateway for host-C)
 ```
 #### Host-A
 ```
@@ -162,7 +162,7 @@ In this topology we have a switch directly connected to two networks. Because of
 
 ## Files and devices configuration
 ### Vagrant file
-First of all, we need to reconfigure the ` Vagrantfile ` file. What we need to do is to change some lines of this file. In particular we need to change the path for every device from ` "common.sh" ` to ` "deviceName.sh" `.
+First of all, we need to reconfigure the ` Vagrantfile ` file. What we need to do is to change some lines of this file. In particular we need to change the path for every device from ` common.sh ` to ` [deviceName].sh `.
 We need also to increase the memory of Host-C from 256 to 512 to run a Docker image.
 
 ##### Router 1
@@ -209,7 +209,7 @@ sudo ip route add 192.168.4.0/25 via 10.1.1.2               (static route to hos
 
 ### Router-2
 Router-2 must be connected to host-C network and router-1 to grant the connection between all the networks of our topology (host-C network connected to host-A and host-B networks).
-Also we need to create a static routes, in order to grant the connectivity between host-C network connected to host-A and host-B networks. In particular we need to specify that packets whose destination is the host-C network must be sent to the router-2.
+Also we need to create a static routes, in order to grant the connectivity between host-C network connected to host-A and host-B networks. In particular we need to specify that packets whose destination is the host-A or host-B network must be sent to the router-2.
 To do this we open the ` router-2.sh ` file and type as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
@@ -261,12 +261,12 @@ sudo ip route add 192.168.4.0/25 via 192.168.2.1   (static route to host-C netwo
 
 ### Host-C
 Host-C in our topology is connected to router-2 and must contain static routes in order to send the packages to the correct IP (host-A must know how to reach host-B and host-C networks).
-Also host-C must run the ` dustnic82 / nginx-test ` docker image, so we need to install ` docker.io `  and run that docker image.
-To do that we need to open the `file host-a.sh ` and complete it as follow:
+Also host-C must run the ` dustnic82 / nginx-test ` Docker image, so we need to install ` docker.io `  and run that Docker image.
+To do that we need to open the file ` host-a.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
-sudo apt -y install docker.io                                   (docker installation and startup)
+sudo apt -y install docker.io                                   (Docker installation and startup)
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo docker pull dustnic82/nginx-test                           (pull and open of "dustnic82 / nginx-test")
@@ -278,8 +278,8 @@ sudo ip route add 192.168.2.0/23 via 192.168.4.1                (static route to
 ```
 
 # Test and conclusions
-To test the behavior of our network we need to run the ` vagrant up ` command into our ` dncs-lab ` directory, wait a little bit, and after the startup log into each host, with the command ` vagrant ssh [hostname] `, and try to ping the other ones, with the command ` ping [hostname] `.
-When we log into host-A and/or host-B we can test our docker image on the host-C with the ` curl 192.168.4.2 ` command.
+To test the behavior of our network we need to run the ` vagrant up ` command into our ` dncs-lab ` directory, wait a little bit, and after the startup log into each host with the command ` vagrant ssh [hostname] ` and try to ping the other ones, with the command ` ping [hostname] `.
+When we log into host-A and/or host-B we can test our Docker image on the host-C with the ` curl 192.168.4.2 ` command.
 With this command the result should be as follow:
 ```
 <!DOCTYPE html>
