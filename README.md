@@ -240,7 +240,7 @@ sudo ip link set dev enp0s10 up                  (activating enp0s10 port)
 ```
 
 ### Host-A
-Host-A in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-C must know how to reach host-A and host-B networks). To do that we need to open the `file host-a.sh ` and complete it as follow:
+Host-A in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-A must know how to reach host-C and host-B networks). To do that we need to open the file ` host-a.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo ip addr add 192.168.0.2/23 dev enp0s8          (set the IP of enp0s8 port [host-A])
@@ -250,7 +250,7 @@ sudo ip route add 192.168.2.0/23 via 192.168.0.1    (static route to host-B netw
 ```
 
 ### Host-B
-Host-B in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-B must know how to reach host-A and host-C networks). To do that we need to open the `file host-a.sh ` and complete it as follow:
+Host-B in our topology is connected to the switch and must contain static routes in order to send the packages to the correct IP (host-B must know how to reach host-A and host-C networks). To do that we need to open the file ` host-b.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo ip addr add 192.168.2.2/23 dev enp0s8         (set the IP of enp0s8 port [host-B])
@@ -260,9 +260,9 @@ sudo ip route add 192.168.4.0/25 via 192.168.2.1   (static route to host-C netwo
 ```
 
 ### Host-C
-Host-C in our topology is connected to router-2 and must contain static routes in order to send the packages to the correct IP (host-A must know how to reach host-B and host-C networks).
+Host-C in our topology is connected to router-2 and must contain static routes in order to send the packages to the correct IP (host-C must know how to reach host-B and host-A networks).
 Also host-C must run the ` dustnic82 / nginx-test ` Docker image, so we need to install ` docker.io `  and run that Docker image.
-To do that we need to open the file ` host-a.sh ` and complete it as follow:
+To do that we need to open the file ` host-c.sh ` and complete it as follow:
 ```
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
