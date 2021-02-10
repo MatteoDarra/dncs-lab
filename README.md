@@ -119,7 +119,7 @@ The assignment deliverable consists of a Github repository containing:
 # Design
 
 ## Network requirements
-- 467 adresses for Host-A
+- 467 addresses for Host-A
 - 393 addresses for host-B
 - 126 addresses for host-C
 - Host-C running a Docker image reachable by host-A and host-B
